@@ -9,8 +9,9 @@
 <style>
     *{
         margin: 0;
+        position: relative;
     }
-    html,body{height:100%;margin:0}
+    html,body{height:100%;margin:0;}
     body{
       background: url('./src/308bfcf37eeafbe3.png') center center / auto 100% no-repeat; 
     }
@@ -20,7 +21,6 @@
         position: absolute;
         display: flex;
         align-items: center;
-        
         flex-direction: column;
     }
     h1{
@@ -29,23 +29,62 @@
               -1px 1px 0 #efe4d1,
               1px 1px 0 #efe4d1;
     }
+    #look{
+      width: 100%;
+      height: 100%;
+      background-color: #fff;
+      position: absolute;
+      display: none;
+      align-items: center;
+      flex-direction: column;
+      justify-content: center;
+      
+    }
+    #look img{
+      height: 50%;
+    }
+    #cross{
+      position: absolute; 
+      top: 20px;
+      right: 20px;
+      cursor: pointer;
+    }
   </style>
 <body>
     <div id="head">
         <h1>POP 14</h1>
         <h1 id="count">0</h1>
     </div>
+    <div id="look">
+        <div style="margin-bottom: 20px;">你已經點了<sapn id="howmany"></sapn>下，看一下我寶貝</div>
+        <img src="./src/5eb332-bfecgz3l97am2usjtq16empatkdg0b8u-1.jpg" alt="">
+        <div id="cross">X</div>
+    </div>
 </body>
 <script>
     const count = document.getElementById('head');
     const countr = document.getElementById('count');
+    const howmany = document.getElementById('howmany');
+    const look = document.getElementById('look');
+    const cross = document.getElementById('cross');
+
     let counter = 0;
     count.addEventListener('click', () => {
         counter ++; 
         countr.textContent = counter; 
         console.log(counter);
+
+        if(counter !== 0 && counter % 20 == 0){
+          look.style.display = "flex";
+          howmany.textContent = counter;
+        }
     });
 
+    cross.addEventListener('click', () => {
+      look.style.display = "none";
+    });
+
+    
     (function(){
       const BG1 = './src/308bfcf37eeafbe3.png';
       const BG2 = './src/3956ebb3bcb4069c.png';
