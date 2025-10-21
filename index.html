@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>POP 14</title>
+</head>
+<style>
+    *{
+        margin: 0;
+    }
+    html,body{height:100%;margin:0}
+    body{
+      background: url('/308bfcf37eeafbe3.png') center center / auto 100% no-repeat; 
+    }
+    #head{
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        display: flex;
+        align-items: center;
+        
+        flex-direction: column;
+    }
+    h1{
+        text-shadow: -1px -1px 0 #efe4d1,
+              1px -1px 0 #efe4d1,
+              -1px 1px 0 #efe4d1,
+              1px 1px 0 #efe4d1;
+    }
+  </style>
+<body>
+    <div id="head">
+        <h1>POP 14</h1>
+        <h1 id="count">0</h1>
+    </div>
+</body>
+<script>
+    const count = document.getElementById('head');
+    const countr = document.getElementById('count');
+    let counter = 0;
+    count.addEventListener('click', () => {
+        counter ++; 
+        countr.textContent = counter; 
+        console.log(counter);
+    });
+
+    (function(){
+      const BG1 = '/308bfcf37eeafbe3.png';
+      const BG2 = '/3956ebb3bcb4069c.png';
+  
+      
+      const preload = new Image();
+      preload.src = BG2;
+  
+      let t = null;
+      document.body.addEventListener('click', () => {
+        
+        if (t) clearTimeout(t);
+  
+        document.body.style.backgroundImage = `url("${BG2}")`;
+  
+        t = setTimeout(() => {
+          document.body.style.backgroundImage = `url("${BG1}")`;
+          t = null;
+        }, 100); // 1 秒後換回
+      });
+    })();
+  </script>
+</html>
