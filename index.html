@@ -69,7 +69,7 @@
   <div id="app" >
     <div id="head" @click="clickNum">
       <h1 style="margin-top: 10px;">POP 14</h1>
-      <h1>{{count_number}}</h1>
+      <h1>{{formatWithCommas(count_number)}}</h1>
       
     </div>
  
@@ -108,7 +108,7 @@
                 <tr v-for="(i,index) in articles.slice(0,10)" :key="i.id">
                   <th scope="row">{{ index+1 }}</th>
                   <td style="width: 60%;word-wrap: break-word;overflow-wrap: break-word;word-break: break-all; ">{{i.name}}</td>
-                  <td style="width: 30%;word-wrap: break-word;overflow-wrap: break-word;word-break: break-all; " v-if="forNum">{{i.counter}}</td>
+                  <td style="width: 30%;word-wrap: break-word;overflow-wrap: break-word;word-break: break-all; " v-if="forNum">{{formatWithCommas(i.counter)}}</td>
                   <td style="width: 30%;word-wrap: break-word;overflow-wrap: break-word;word-break: break-all; " v-else>{{formatNumber(i.counter)}}</td>
 
                 </tr>
@@ -220,6 +220,14 @@
             return val.toString().replace(/\.0$/, '') + 'k';
           }
           return n.toString();
+        },
+        formatWithCommas(n) {
+          if (n == null || n === '') return '';
+            const num = Number(n);
+          if (!Number.isFinite(num)) return String(n); // 不是數字就原樣回傳
+            return new Intl.NumberFormat('en-US', {
+              maximumFractionDigits: 20, // 只影響顯示位數，不會改變整數
+            }).format(num);
         },
         clickNum(){
           this.count_number += 1;
