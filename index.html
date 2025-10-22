@@ -89,9 +89,9 @@
           <div class="modal-body">
             
             <div class="input-group mb-3">
-              <span class="input-group-text" id="inputGroup-sizing-default">點擊次數：{{count_number}}</span>
+              <span class="input-group-text" id="inputGroup-sizing-default">次數：{{formatNumber(count_number)}}</span>
               <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" v-model="user_name" placeholder="輸入暱稱">
-              <button class="btn btn-outline-secondary" type="button" id="button-addon2" @click="insertCount">送出排行榜</button>
+              <button class="btn btn-secondary" type="button" id="button-addon2" @click="insertCount">送出紀錄</button>
             </div>
             
             
@@ -101,14 +101,16 @@
                 <tr>
                   <th scope="col" style="width: 10%;word-wrap: break-all;">#</th>
                   <th scope="col" style="width: 60%;word-wrap: break-word;overflow-wrap: break-word;word-break: break-all; ">暱稱</th>
-                  <th scope="col" style="width: 30%;word-wrap: break-word;overflow-wrap: break-word;word-break: break-all; ">次數</th>
+                  <th scope="col" style="width: 30%;word-wrap: break-word;overflow-wrap: break-word;word-break: break-all; "><button type="button" class="btn btn btn-outline-dark" @click="forNum = !forNum">切換顯示方式</button></th>
                 </tr>
               </thead>
               <tbody>
                 <tr v-for="(i,index) in articles.slice(0,10)" :key="i.id">
                   <th scope="row">{{ index+1 }}</th>
                   <td style="width: 60%;word-wrap: break-word;overflow-wrap: break-word;word-break: break-all; ">{{i.name}}</td>
-                  <td style="width: 30%;word-wrap: break-word;overflow-wrap: break-word;word-break: break-all; ">{{formatNumber(i.counter)}}</td>
+                  <td style="width: 30%;word-wrap: break-word;overflow-wrap: break-word;word-break: break-all; " v-if="forNum">{{i.counter}}</td>
+                  <td style="width: 30%;word-wrap: break-word;overflow-wrap: break-word;word-break: break-all; " v-else>{{formatNumber(i.counter)}}</td>
+
                 </tr>
                 
               </tbody>
@@ -183,7 +185,8 @@
       data: {
         articles: [],
         count_number: 0,
-        user_name: ""
+        user_name: "",
+        forNum: false,
       },
       async mounted() {
     // === 讀取 Supabase 資料 ===
@@ -192,6 +195,7 @@
             .from('pop14')
             .select('*')
             .order('counter', { ascending: false })
+            .order('id', { ascending: true })
 
             if (error) throw error
             this.articles = data
@@ -203,11 +207,17 @@
       },
       methods: {
         formatNumber(n) {
+          if (n >= 1_000_000_000) {
+            const val = Math.floor(n / 100_000_000) / 10; // ← 取到一位小數但不進位
+            return val.toString().replace(/\.0$/, '') + 'B';
+          }
           if (n >= 1_000_000) {
-            return (n / 1_000_000).toFixed(1).replace(/\.0$/, '') + 'M';
+            const val = Math.floor(n / 100_000) / 10;
+            return val.toString().replace(/\.0$/, '') + 'M';
           }
           if (n >= 1_000) {
-            return (n / 1_000).toFixed(1).replace(/\.0$/, '') + 'k';
+            const val = Math.floor(n / 100) / 10;
+            return val.toString().replace(/\.0$/, '') + 'k';
           }
           return n.toString();
         },
