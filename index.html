@@ -56,43 +56,48 @@
         <h1>POP 14</h1>
         <h1 id="count">0</h1>
     </div>
+    <!--
     <div id="look">
         <div style="margin-bottom: 20px;">你已經點了<sapn id="howmany"></sapn>下，看一下我寶貝</div>
         <img src="./src/5eb332-bfecgz3l97am2usjtq16empatkdg0b8u-1.jpg" alt="">
         <div id="cross">X</div>
     </div>
+    -->
 </body>
 <script>
     const count = document.getElementById('head');
     const countr = document.getElementById('count');
     const howmany = document.getElementById('howmany');
-    const look = document.getElementById('look');
-    const cross = document.getElementById('cross');
+    
 
     let counter = 0;
     count.addEventListener('click', () => {
         counter ++; 
         countr.textContent = counter; 
         console.log(counter);
-
+        /*
         if(counter !== 0 && counter % 20 == 0){
           look.style.display = "flex";
           howmany.textContent = counter;
         }
+        */
     });
-
+/*
     cross.addEventListener('click', () => {
       look.style.display = "none";
     });
-
+*/
     
     (function(){
       const BG1 = './src/308bfcf37eeafbe3.png';
       const BG2 = './src/3956ebb3bcb4069c.png';
-  
+      const audioSrc = './src/popcat.mp3';
       
       const preload = new Image();
       preload.src = BG2;
+
+      const sound = new Audio(audioSrc);
+      sound.preload = "auto";
   
       let t = null;
       document.body.addEventListener('click', () => {
@@ -100,6 +105,12 @@
         if (t) clearTimeout(t);
   
         document.body.style.backgroundImage = `url("${BG2}")`;
+        
+        sound.currentTime = 0;
+        sound.play().catch(e => {
+      // 有些瀏覽器限制沒互動就不能自動播放
+          console.warn("音效播放失敗：", e);
+        });
   
         t = setTimeout(() => {
           document.body.style.backgroundImage = `url("${BG1}")`;
